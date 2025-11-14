@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Directions - Campus Navigator</title>
+    <link rel="stylesheet" href="directions.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="top-bar">
+            <button class="back-btn" onclick="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1>Directions</h1>
+            <button class="more-btn">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="5" r="1.5" fill="currentColor"/>
+                    <circle cx="12" cy="12" r="1.5" fill="currentColor"/>
+                    <circle cx="12" cy="19" r="1.5" fill="currentColor"/>
+                </svg>
+            </button>
+        </header>
+
+        <div class="trip-info">
+            <div class="time-info">
+                <div class="duration">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <span class="duration-text">12 min</span>
+                </div>
+                <p class="arrival-time">0.5 mi • Arrival 9:53</p>
+            </div>
+            <p class="step-indicator">Step 2 of 5</p>
+        </div>
+
+        <div class="map-preview">
+            <div class="route-map">
+                <!-- Simple route visualization -->
+                <svg class="route-svg" viewBox="0 0 300 200" preserveAspectRatio="xMidYMid meet">
+                    <path d="M 50 150 Q 100 120 150 100 Q 200 80 250 50" 
+                          stroke="#2196F3" 
+                          stroke-width="4" 
+                          fill="none" 
+                          stroke-linecap="round"/>
+                    <circle cx="50" cy="150" r="8" fill="#E74C3C"/>
+                    <circle cx="250" cy="50" r="8" fill="#27AE60"/>
+                    <circle cx="150" cy="100" r="6" fill="#2196F3"/>
+                </svg>
+            </div>
+            
+            <button class="recenter-map-btn" id="recenterMapBtn">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                    <circle cx="12" cy="12" r="3" fill="currentColor"/>
+                </svg>
+                Recenter
+            </button>
+        </div>
+
+        <div class="current-instruction">
+            <div class="instruction-icon">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                    <path d="M9 18l6-6-6-6" stroke="#2196F3" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+            <div class="instruction-text">
+                <h3>Walk 50m towards Main Building</h3>
+                <p>On Campus Walkway • Slight right ahead</p>
+            </div>
+            <span class="distance-badge">250 ft</span>
+        </div>
+
+        <div class="next-steps">
+            <div class="next-step-preview">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Then turn right at Central Fountain</span>
+            </div>
+            <p class="next-step-info">Next step preview</p>
+        </div>
+
+        <div class="minimap">
+            <div class="minimap-header">
+                <span>Minimap</span>
+                <div class="location-tags">
+                    <span class="tag">You</span>
+                    <span class="tag">Security</span>
+                    <span class="tag">Medical</span>
+                    <span class="tag">Destination</span>
+                </div>
+            </div>
+            <div class="minimap-view">
+                <!-- Simplified minimap representation -->
+            </div>
+        </div>
+
+        <div class="direction-steps">
+            <h3 class="steps-header">All Steps</h3>
+            <div class="step-item">
+                <div class="step-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M12 2v10m0 0l4-4m-4 4l-4-4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <p class="step-instruction">Turn right onto Science Mall</p>
+                    <span class="step-distance">250 ft</span>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 5v14M15 9v10" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <p class="step-instruction">In 250 ft • At the fountain</p>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <p class="step-instruction">Head north on Campus Loop</p>
+                    <span class="step-distance">0.2 mi</span>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <p class="step-instruction">Turn right onto Science Mall</p>
+                    <span class="step-distance">250 ft</span>
+                </div>
+            </div>
+
+            <div class="step-item">
+                <div class="step-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 9l-6 6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <p class="step-instruction">Turn left at Library Plaza</p>
+                    <span class="step-distance">300 ft</span>
+                </div>
+            </div>
+
+            <div class="step-item final">
+                <div class="step-icon">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                        <path d="M12 6v6l4 2" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </div>
+                <div class="step-content">
+                    <p class="step-instruction">Destination will be on the right</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="btn-mute">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                    <path d="M11 5L6 9H2v6h4l5 4V5zM19.07 4.93a10 10 0 010 14.14M15.54 8.46a5 5 0 010 7.07" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                Mute Voice
+            </button>
+            <button class="btn-reroute">Re-route</button>
+        </div>
+
+        <button class="btn-end-navigation">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <rect x="6" y="6" width="12" height="12" stroke="white" stroke-width="2" fill="white"/>
+            </svg>
+            End Navigation
+        </button>
+
+        <nav class="bottom-nav">
+            <a href="map.html" class="nav-item active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Map</span>
+            </a>
+            <a href="search.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Search</span>
+            </a>
+            <a href="favorites.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Favorites</span>
+            </a>
+            <a href="settings.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 1v6m0 6v6M1 12h6m6 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="directions.js"></script>
+</body>
+</html>

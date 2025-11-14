@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings - Campus Navigator</title>
+    <link rel="stylesheet" href="settings.css">
+</head>
+<body>
+    <div class="page-container">
+        <header class="top-bar">
+            <button class="back-btn" onclick="goBack()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </button>
+            <h1>Settings</h1>
+            <div class="spacer"></div>
+        </header>
+
+        <div class="content">
+            <div class="profile-section">
+                <img src="https://via.placeholder.com/60" alt="Profile" class="profile-img">
+                <div class="profile-info">
+                    <h2>Jordan Carter</h2>
+                    <div class="profile-actions">
+                        <button class="btn-secondary">Edit Profile</button>
+                        <button class="btn-secondary">Manage Account</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-list">
+                <a href="accessibility.html" class="settings-item">
+                    <div class="icon-wrapper blue">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 8v8M8 12h8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <h3>Accessibility Options</h3>
+                        <p>Text size, contrast, voice guidance</p>
+                    </div>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+
+                <a href="map-preferences.html" class="settings-item">
+                    <div class="icon-wrapper purple">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <h3>Map Preferences</h3>
+                        <p>Default layer, avoid stairs, offline map</p>
+                    </div>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+
+                <a href="notifications.html" class="settings-item">
+                    <div class="icon-wrapper green">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M18 8A6 6 0 106 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <h3>Notifications</h3>
+                        <p>Arrivals, event reminders, service alerts</p>
+                    </div>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+
+                <a href="language.html" class="settings-item">
+                    <div class="icon-wrapper orange">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M2 12h20M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <h3>Language</h3>
+                        <p>English (US)</p>
+                    </div>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+
+                <div class="settings-item toggle-item">
+                    <div class="icon-wrapper gray">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <h3>Dark Mode</h3>
+                        <p>Use a dark appearance</p>
+                    </div>
+                    <label class="toggle">
+                        <input type="checkbox" id="darkModeToggle">
+                        <span class="slider"></span>
+                    </label>
+                </div>
+
+                <a href="about.html" class="settings-item">
+                    <div class="icon-wrapper teal">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"/>
+                            <path d="M12 16v-4M12 8h.01" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                    </div>
+                    <div class="item-content">
+                        <h3>About</h3>
+                        <p>Version 1.0.0, Licenses, Privacy</p>
+                    </div>
+                    <svg class="chevron" width="20" height="20" viewBox="0 0 24 24" fill="none">
+                        <path d="M9 18l6-6-6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </a>
+            </div>
+
+            <div class="app-description">
+                <p>Campus Navigator helps you find buildings, services, and routes across the university.</p>
+            </div>
+        </div>
+
+        <nav class="bottom-nav">
+            <a href="map.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Map</span>
+            </a>
+            <a href="search.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="11" cy="11" r="8" stroke="currentColor" stroke-width="2"/>
+                    <path d="M21 21l-4.35-4.35" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Search</span>
+            </a>
+            <a href="favorites.html" class="nav-item">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z" stroke="currentColor" stroke-width="2"/>
+                </svg>
+                <span>Favorites</span>
+            </a>
+            <a href="settings.html" class="nav-item active">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="2"/>
+                    <path d="M12 1v6m0 6v6M1 12h6m6 0h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span>Profile</span>
+            </a>
+        </nav>
+    </div>
+
+    <script src="settings.js"></script>
+</body>
+</html>
