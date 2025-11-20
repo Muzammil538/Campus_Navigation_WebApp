@@ -269,3 +269,18 @@ input:checked + .slider:before {
         width: 100%;
     }
 }
+
+
+.logout-item {
+    background: none;
+    width: 100%;
+    text-align: left;
+}
+
+.icon-wrapper.red {
+    background: #FFEBEE;
+}
+
+.icon-wrapper.red svg {
+    color: #E74C3C;
+}

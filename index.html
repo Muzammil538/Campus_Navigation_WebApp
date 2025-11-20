@@ -22,17 +22,24 @@
         </div>
     </div>
 
+    <script src="auth.js"></script>
     <script>
-        // Simulate app loading and redirect to onboarding or map
+        // Check authentication status and redirect accordingly
         window.addEventListener('load', function() {
             setTimeout(function() {
-                // Check if user has completed onboarding
+                const isLoggedIn = localStorage.getItem('isLoggedIn');
                 const hasSeenOnboarding = localStorage.getItem('hasSeenOnboarding');
                 
-                if (hasSeenOnboarding === 'true') {
-                    window.location.href = 'map.html';
+                if (isLoggedIn === 'true') {
+                    // User is logged in
+                    if (hasSeenOnboarding === 'true') {
+                        window.location.href = 'map.html';
+                    } else {
+                        window.location.href = 'onboarding.html';
+                    }
                 } else {
-                    window.location.href = 'onboarding.html';
+                    // User not logged in - go to login page
+                    window.location.href = 'login.html';
                 }
             }, 2000); // 2 second splash screen
         });
