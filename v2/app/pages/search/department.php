@@ -1,17 +1,18 @@
 <?php
-require_once __DIR__ . '/../../config/config.php';
-require_once __DIR__ . '/../../config/database.php';
+chdir(dirname(__DIR__));
+require_once __DIR__ . '/app/config/config.php';
+require_once __DIR__ . '/app/config/database.php';
 requireLogin();
 
 $id = (int)($_GET['id'] ?? 0);
-if (!$id) redirect('/app/pages/search/index.php');
+if (!$id) redirect(__DIR__.'/app/pages/search/index.php');
 
 $db = (new Database())->getConnection();
 
 $stmt = $db->prepare("SELECT * FROM departments WHERE id = :id");
 $stmt->execute([':id' => $id]);
 $department = $stmt->fetch(PDO::FETCH_ASSOC);
-if (!$department) redirect('/app/pages/search/index.php');
+if (!$department) redirect(__DIR__.'/app/pages/search/index.php');
 
 $stmt = $db->prepare("SELECT * FROM labs WHERE department_id = :id ORDER BY name");
 $stmt->execute([':id' => $id]);
