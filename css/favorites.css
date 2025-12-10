@@ -1,0 +1,5 @@
+@import url('index.css');
+
+/* Favorites specific styles */
+.bookmarks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bookmark-card { border-radius: 12px; overflow: hidden; }

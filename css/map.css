@@ -1,0 +1,4 @@
+@import url('index.css');
+
+/* Map page specific overrides */
+.map-container { height: 420px; }

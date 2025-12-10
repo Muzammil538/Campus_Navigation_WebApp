@@ -1,0 +1,5 @@
+@import url('index.css');
+
+/* Directions page specific styles */
+#directionsMap { height: 380px; }
+.current-instruction { display: flex; gap: 12px; align-items: center; padding: 12px; }
