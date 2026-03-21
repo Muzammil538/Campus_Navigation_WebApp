@@ -184,22 +184,7 @@ function triggerSOS() {
     }
 }
 
-// Load Google Maps dynamically, then initialize emergency map; fall back to simple SVG map if unavailable
-window.addEventListener('load', function() {
-    loadGoogleMaps()
-        .then(() => {
-            try {
-                initEmergencyMap();
-            } catch (e) {
-                console.error('initEmergencyMap error:', e);
-                initSimpleMap('emergencyMap', { message: 'Map initialization failed' });
-            }
-        })
-        .catch((err) => {
-            console.warn('Google Maps not available:', err);
-            initSimpleMap('emergencyMap');
-        });
-});
+window.addEventListener('load', initEmergencyMap);
 </script>
 
 <?php include 'includes/footer.php'; ?>

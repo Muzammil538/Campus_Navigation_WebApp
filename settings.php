@@ -68,7 +68,7 @@ $customCSS = 'settings.css';
 
     <div class="content">
         <div class="profile-section">
-            <img src="<?php echo $userData['profile_image'] ?? 'images/default-avatar.svg'; ?>" alt="Profile" class="profile-img">
+            <img src="<?php echo $userData['profile_image'] ?? 'images/default-avatar.png'; ?>" alt="Profile" class="profile-img">
             <div class="profile-info">
                 <h2><?php echo htmlspecialchars($userData['full_name']); ?></h2>
                 <p class="role-badge"><?php echo ucfirst($userData['role']); ?></p>

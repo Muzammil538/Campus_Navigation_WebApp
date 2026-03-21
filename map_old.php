@@ -41,6 +41,7 @@ $customCSS = 'map.css';
     <div class="map-container" id="map" style="width: 100%; height: 350px; background: #e8f0e8; position: relative;">
         <div id="mapLoading" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center; color: #666;">
             <p>Loading map...</p>
+            <div style="margin-top: 10px; font-size: 12px; color: #999;">If map doesn't load, please check your API key</div>
         </div>
     </div>
 
@@ -97,12 +98,8 @@ $customCSS = 'map.css';
 console.log('=== Map Script Starting ===');
 
 let map = null;
-let mapInitialized = false;
 let markers = [];
 let userMarker = null;
-let destinationMarker = null;
-let routeLine = null;
-let isNavigating = false;
 let selectedBuildingId = null;
 let buildings = <?php echo json_encode($buildings); ?>;
 let userBookmarks = <?php echo json_encode($userBookmarks); ?>;
@@ -111,13 +108,6 @@ console.log('Buildings loaded:', buildings.length);
 console.log('Leaflet available:', typeof L !== 'undefined');
 
 function initMap() {
-    // Prevent double initialization
-    if (mapInitialized) {
-        console.warn('⚠️ Map already initialized, skipping...');
-        return;
-    }
-    mapInitialized = true;
-    
     console.log('initMap() called');
     
     const mapElement = document.getElementById('map');
@@ -137,7 +127,8 @@ function initMap() {
         // Create map
         map = L.map('map', {
             center: [28.545000, 77.192500],
-            zoom: 16
+            zoom: 16,
+            layers: []
         });
         
         console.log('✓ Map object created');
@@ -157,7 +148,7 @@ function initMap() {
         
         // Add building markers
         console.log('Adding', buildings.length, 'building markers...');
-        buildings.forEach((building) => {
+        buildings.forEach((building, index) => {
             addBuildingMarker(building);
         });
         
@@ -188,11 +179,8 @@ function initMap() {
             );
         }
         
-        console.log('✓ Map initialization complete!');
-        
     } catch (error) {
         console.error('❌ Error initializing map:', error);
-        mapInitialized = false;
         mapElement.innerHTML = '<div style="padding: 20px; color: red;"><strong>Error:</strong> ' + error.message + '</div>';
     }
 }
@@ -218,7 +206,7 @@ function addBuildingMarker(building) {
         })
     }).addTo(map);
     
-    marker.bindPopup(`<strong>${building.name}</strong><br>${building.description || ''}`);
+    marker.bindPopup(`<strong>${building.name}</strong><br>${building.description || ''}<br><button onclick="selectBuilding(${building.id}, event)">Select</button>`);
     
     marker.on('click', function() {
         selectedBuildingId = building.id;
@@ -240,6 +228,15 @@ function getCategoryColor(category) {
         'parking': '#95A5A6'
     };
     return colors[category] || '#2196F3';
+}
+
+function selectBuilding(buildingId, event) {
+    event.stopPropagation();
+    selectedBuildingId = buildingId;
+    const building = buildings.find(b => b.id == buildingId);
+    if (building) {
+        showBuildingInfo(building);
+    }
 }
 
 function showBuildingInfo(building) {
@@ -266,98 +263,9 @@ function closeBuildingCard() {
 }
 
 function navigateToBuilding() {
-    const building = buildings.find(b => b.id == selectedBuildingId);
-    if (!building) {
-        alert('Please select a building first');
-        return;
+    if (selectedBuildingId) {
+        window.location.href = `directions.php?building=${selectedBuildingId}`;
     }
-
-    if (!userMarker) {
-        alert('Your location is required for navigation. Allow location access and try again.');
-        return;
-    }
-
-    // If already navigating, clear previous route
-    if (routeLine) {
-        map.removeLayer(routeLine);
-        routeLine = null;
-    }
-    if (destinationMarker) {
-        map.removeLayer(destinationMarker);
-        destinationMarker = null;
-    }
-
-    const userLatLng = userMarker.getLatLng();
-    const destLatLng = L.latLng(parseFloat(building.latitude), parseFloat(building.longitude));
-
-    // Draw simple straight-line route (polyline) as fallback without routing API
-    routeLine = L.polyline([userLatLng, destLatLng], { color: '#2196F3', weight: 5, opacity: 0.9 }).addTo(map);
-
-    // Add destination marker
-    destinationMarker = L.circleMarker(destLatLng, { radius: 8, fillColor: '#FF7043', color: '#fff', weight: 2 }).addTo(map).bindPopup(building.name).openPopup();
-
-    // Fit map to route
-    const bounds = routeLine.getBounds().pad(0.2);
-    map.fitBounds(bounds);
-
-    // Compute distance (meters) and estimated duration (seconds)
-    const distanceMeters = userLatLng.distanceTo(destLatLng);
-    const avgWalkingSpeed = 1.4; // m/s (~5 km/h)
-    const durationSeconds = Math.max(30, Math.round(distanceMeters / avgWalkingSpeed));
-
-    // Show navigation panel
-    showNavigationPanel(building.name, distanceMeters, durationSeconds);
-
-    // Save to navigation history (server expects building_id, distance, duration)
-    fetch('api/save-navigation.php', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ building_id: selectedBuildingId, distance: Math.round(distanceMeters), duration: durationSeconds })
-    }).catch(e => console.warn('Failed to save navigation history', e));
-
-    isNavigating = true;
-}
-
-function endNavigation() {
-    if (routeLine) { map.removeLayer(routeLine); routeLine = null; }
-    if (destinationMarker) { map.removeLayer(destinationMarker); destinationMarker = null; }
-    isNavigating = false;
-    const panel = document.getElementById('navPanel');
-    if (panel) panel.remove();
-}
-
-function showNavigationPanel(name, distanceMeters, durationSeconds) {
-    let panel = document.getElementById('navPanel');
-    if (!panel) {
-        panel = document.createElement('div');
-        panel.id = 'navPanel';
-        panel.style.position = 'fixed';
-        panel.style.left = '50%';
-        panel.style.transform = 'translateX(-50%)';
-        panel.style.bottom = '90px';
-        panel.style.zIndex = 2000;
-        panel.style.background = '#fff';
-        panel.style.padding = '12px 16px';
-        panel.style.borderRadius = '12px';
-        panel.style.boxShadow = '0 6px 18px rgba(0,0,0,0.12)';
-        panel.style.minWidth = '260px';
-        document.body.appendChild(panel);
-    }
-
-    const km = (distanceMeters / 1000).toFixed(2);
-    const eta = new Date(Date.now() + durationSeconds * 1000).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-
-    panel.innerHTML = `<div style="display:flex;flex-direction:column;gap:8px;">
-        <div style="font-weight:600">Navigating to ${escapeHtml(name)}</div>
-        <div style="font-size:13px;color:#666">Distance: ${km} km • ETA: ${eta}</div>
-        <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:6px;">
-            <button onclick="endNavigation()" style="padding:8px 12px;border-radius:8px;border:none;background:#E74C3C;color:#fff;cursor:pointer">End Navigation</button>
-        </div>
-    </div>`;
-}
-
-function escapeHtml(str) {
-    return String(str).replace(/[&<>"']/g, function(s) { return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;"})[s]; });
 }
 
 function viewBuildingDetails() {
@@ -377,17 +285,13 @@ function toggleBookmark() {
     .then(r => r.json())
     .then(data => {
         if (data.success) location.reload();
-    })
-    .catch(e => console.error('Error toggling bookmark:', e));
+    });
 }
 
 function centerOnUserLocation() {
     if (userMarker && map) {
         const latlng = userMarker.getLatLng();
         map.setView([latlng.lat, latlng.lng], 17);
-        console.log('Map centered on user location');
-    } else {
-        alert('Your location is not available');
     }
 }
 
@@ -396,21 +300,103 @@ function saveNavigationHistory(buildingId, distance, duration) {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ building_id: buildingId, distance, duration })
-    }).catch(e => console.error('Error saving navigation history:', e));
+    });
 }
 
-// Initialize map when document is ready
+// Initialize on window load
 console.log('Document ready state:', document.readyState);
 
 if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('✓ DOMContentLoaded event');
-        setTimeout(initMap, 100);
+        console.log('DOMContentLoaded - initializing map');
+        setTimeout(initMap, 200);
     });
 } else {
-    console.log('✓ Document already loaded');
-    setTimeout(initMap, 100);
+    console.log('Document already loaded - initializing map immediately');
+    setTimeout(initMap, 200);
 }
+
+window.addEventListener('load', function() {
+    console.log('Window load event');
+    if (!map) setTimeout(initMap, 200);
+});
+</script>
+
+function showBuildingInfo(building) {
+    selectedBuildingId = building.id;
+    const card = document.getElementById('buildingInfoCard');
+    
+    document.getElementById('cardBuildingName').textContent = building.name;
+    document.getElementById('cardBuildingDescription').textContent = building.description || 'No description available';
+    
+    // Check if bookmarked
+    const isBookmarked = userBookmarks.some(b => b.id == building.id);
+    const bookmarkBtn = document.getElementById('bookmarkBtn');
+    
+    if (isBookmarked) {
+        bookmarkBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z" stroke="currentColor" stroke-width="2"/></svg> Saved';
+    } else {
+        bookmarkBtn.innerHTML = '<svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2v16z" stroke="currentColor" stroke-width="2"/></svg> Save';
+    }
+    
+    card.style.display = 'block';
+    
+    // Announce building for voice navigation
+    <?php if ($_SESSION['voice_navigation']): ?>
+    speak(`${building.name}. ${building.description || ''}`);
+    <?php endif; ?>
+}
+
+function closeBuildingCard() {
+    document.getElementById('buildingInfoCard').style.display = 'none';
+}
+
+function navigateToBuilding() {
+    const building = buildings.find(b => b.id == selectedBuildingId);
+    if (!building) {
+        alert('Building not found');
+        return;
+    }
+    
+    // Go to directions page
+    window.location.href = `directions.php?building=${selectedBuildingId}`;
+}
+
+function viewBuildingDetails() {
+    window.location.href = `building-detail.php?id=${selectedBuildingId}`;
+}
+
+function toggleBookmark() {
+    fetch('api/toggle-bookmark.php', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            building_id: selectedBuildingId
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            // Update UI
+            const building = buildings.find(b => b.id == selectedBuildingId);
+            if (data.action === 'added') {
+                userBookmarks.push(building);
+                speak('Building saved to favorites');
+            } else {
+                userBookmarks = userBookmarks.filter(b => b.id != selectedBuildingId);
+                speak('Building removed from favorites');
+            }
+            showBuildingInfo(building);
+        }
+    });
+}
+
+window.addEventListener('load', function() {
+    console.log('Window load event');
+    if (!map) setTimeout(initMap, 200);
+});
 </script>
 
 <?php include 'includes/footer.php'; ?>

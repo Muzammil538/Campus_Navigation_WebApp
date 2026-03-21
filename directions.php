@@ -56,7 +56,7 @@ $customCSS = 'directions.css';
         <p class="destination-name">To: <?php echo htmlspecialchars($building['name']); ?></p>
     </div>
 
-    <div class="map-preview" id="directionsMap"></div>
+    <div class="map-preview" id="directionsMap" style="height: 300px; width: 100%; border-radius: 12px; margin: 16px 0;"></div>
 
     <div class="current-instruction" id="currentInstruction" style="display: none;">
         <div class="instruction-icon">
@@ -395,22 +395,7 @@ function getETA(durationInSeconds) {
     return eta.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
 }
 
-// Load Google Maps dynamically, then initialize map; fall back to simple SVG map if unavailable
-window.addEventListener('load', function() {
-    loadGoogleMaps()
-        .then(() => {
-            try {
-                initMap();
-            } catch (e) {
-                console.error('initMap error:', e);
-                initSimpleMap('directionsMap', { message: 'Map initialization failed' });
-            }
-        })
-        .catch((err) => {
-            console.warn('Google Maps not available:', err);
-            initSimpleMap('directionsMap');
-        });
-});
+window.addEventListener('load', initMap);
 
 // Prevent accidental page unload during navigation
 window.addEventListener('beforeunload', (e) => {

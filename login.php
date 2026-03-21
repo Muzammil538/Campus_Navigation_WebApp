@@ -1,11 +1,11 @@
 <?php
-require_once __DIR__ . 'config/config.php';
-require_once __DIR__ . 'config/database.php';
-require_once __DIR__ . 'models/User.php';
+require_once 'config/config.php';
+require_once 'config/database.php';
+require_once 'models/User.php';
 
 // Redirect if already logged in
 if (isLoggedIn()) {
-    redirect(__DIR__ . 'map.php');
+    redirect('map.php');
 }
 
 $error = '';
@@ -68,7 +68,9 @@ $pageTitle = 'Login';
         <div class="login-content">
             <div class="header-section">
                 <div class="logo-container">
-                    <img class="app-logo" width="60" height="60" viewBox="0 0 24 24" src="images/campus-navigator-logo.svg"/>
+                    <svg class="app-logo" width="60" height="60" viewBox="0 0 24 24" fill="none">
+                        <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" stroke="#2196F3" stroke-width="2"/>
+                    </svg>
                 </div>
                 <h1>Welcome Back</h1>
                 <p>Sign in to continue to Campus Navigator</p>

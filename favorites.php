@@ -54,7 +54,7 @@ $customCSS = 'favorites.css';
                 <?php foreach ($bookmarks as $bookmark): ?>
                     <div class="bookmark-card" data-type="<?php echo $bookmark['category']; ?>">
                         <div class="card-image">
-                            <img src="<?php echo $bookmark['image_url'] ?? 'images/placeholder-building.svg'; ?>" alt="<?php echo htmlspecialchars($bookmark['name']); ?>">
+                            <img src="<?php echo $bookmark['image_url'] ?? 'images/placeholder-building.jpg'; ?>" alt="<?php echo htmlspecialchars($bookmark['name']); ?>">
                             <button class="favorite-btn active" onclick="removeBookmark(<?php echo $bookmark['id']; ?>)">
                                 <svg width="24" height="24" viewBox="0 0 24 24" fill="#E74C3C">
                                     <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/>

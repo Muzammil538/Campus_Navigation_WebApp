@@ -34,7 +34,7 @@ $customCSS = 'building-detail.css';
 
 <div class="page-container">
     <div class="image-header">
-        <img src="<?php echo $building['image_url'] ?? 'images/placeholder-building.svg'; ?>" alt="<?php echo htmlspecialchars($building['name']); ?>">
+        <img src="<?php echo $building['image_url'] ?? 'images/placeholder-building.jpg'; ?>" alt="<?php echo htmlspecialchars($building['name']); ?>">
         <button class="back-btn" onclick="window.history.back()">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                 <path d="M15 18L9 12L15 6" stroke="white" stroke-width="2" stroke-linecap="round"/>
@@ -202,22 +202,7 @@ function copyToClipboard(text) {
     document.body.removeChild(textarea);
 }
 
-// Load Google Maps dynamically, then initialize detail map; fall back to simple SVG map if unavailable
-window.addEventListener('load', function() {
-    loadGoogleMaps()
-        .then(() => {
-            try {
-                initDetailMap();
-            } catch (e) {
-                console.error('initDetailMap error:', e);
-                initSimpleMap('detailMap', { message: 'Map initialization failed' });
-            }
-        })
-        .catch((err) => {
-            console.warn('Google Maps not available:', err);
-            initSimpleMap('detailMap');
-        });
-});
+window.addEventListener('load', initDetailMap);
 
 // Voice announcement
 <?php if ($_SESSION['voice_navigation']): ?>

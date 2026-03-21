@@ -15,8 +15,17 @@ body {
   position: relative;
   padding-bottom: 80px;
 }
-a { color: #2196F3; text-decoration: none; }
-a:hover { text-decoration: underline; }
+/* Improved link styling */
+a {
+  color: #2196F3;
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s, text-decoration 0.2s;
+}
+a:hover, a:focus {
+  color: #1565C0;
+  text-decoration: underline;
+}
 /* ============= HEADER & TOP BAR ============= */
 .top-bar, .map-header, .search-header {
   display: flex; align-items: center; justify-content: space-between;
@@ -71,15 +80,41 @@ a:hover { text-decoration: underline; }
 .form-options {display:flex;justify-content:space-between;align-items:center;margin-top:-8px;}
 .forgot-link {font-size:14px;color:#2196F3;text-decoration:none;}
 .forgot-link:hover {text-decoration:underline;}
-.btn-login,.btn-signup,.btn-primary,.btn-secondary,.btn-submit {
-  width: 100%; padding: 16px; background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
-  color: #fff; border: none; border-radius: 12px; font-size: 16px; font-weight: 600;
-  cursor:pointer; transition:all 0.3s; box-shadow: 0 4px 12px rgba(102,126,234,0.4);
+/* Improved button styling */
+.btn-login, .btn-signup, .btn-primary, .btn-secondary, .btn-submit, .btn-action, .btn-control, .btn-end-navigation, .call-btn, .sos-btn, .btn-get-started {
+  width: 100%;
+  padding: 16px;
+  background: linear-gradient(135deg,#667eea 0%,#764ba2 100%);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s, box-shadow 0.2s;
+  box-shadow: 0 4px 12px rgba(102,126,234,0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
 }
-.btn-secondary{background:#fff;color:#2196F3;border:2px solid #2196F3;}
-.btn-secondary:hover{background:#E3F2FD;}
-.btn-login:hover,.btn-signup:hover,.btn-primary:hover{transform: translateY(-2px);}
-.btn-login:active,.btn-signup:active,.btn-primary:active{transform: translateY(0);}
+.btn-secondary {
+  background: #fff;
+  color: #2196F3;
+  border: 2px solid #2196F3;
+}
+.btn-secondary:hover, .btn-secondary:focus {
+  background: #E3F2FD;
+  color: #1565C0;
+}
+.btn-login:hover, .btn-signup:hover, .btn-primary:hover, .btn-submit:hover, .btn-action:hover, .btn-control:hover, .btn-end-navigation:hover, .call-btn:hover, .sos-btn:hover, .btn-get-started:hover {
+  box-shadow: 0 8px 24px rgba(102,126,234,0.18);
+  transform: translateY(-2px);
+  background: linear-gradient(135deg,#2196F3 0%,#667eea 100%);
+}
+.btn-login:active, .btn-signup:active, .btn-primary:active, .btn-submit:active, .btn-action:active, .btn-control:active, .btn-end-navigation:active, .call-btn:active, .sos-btn:active, .btn-get-started:active {
+  transform: translateY(0);
+}
 .star-rating {display:flex;justify-content:center;gap:8px;}
 .star {background:none;border:none;cursor:pointer;padding:4px;color:#ddd;transition:all 0.2s;}
 .star.active svg path {fill:#F39C12;stroke:#F39C12;}
@@ -224,15 +259,38 @@ a:hover { text-decoration: underline; }
 .nav-item span {font-size: 12px;}
 .nav-item.active {color: #2196F3;}
 /* ============= RESPONSIVE DESIGN ============= */
-@media (max-width: 480px) { .page-container { max-width: 100%; } }
+/* Responsive improvements */
+@media (max-width: 600px) {
+  .page-container {
+    max-width: 100%;
+    padding: 0 4px 80px 4px;
+  }
+  .top-bar, .map-header, .search-header {
+    padding: 8px 8px;
+    font-size: 16px;
+  }
+  .settings-item, .toggle-item {
+    padding: 14px 8px;
+    gap: 10px;
+  }
+  .profile-section {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+  .profile-img {
+    width: 48px;
+    height: 48px;
+  }
+}
 @media (max-width: 360px) {
-  .app-title { font-size: 28px;}
-  .app-logo { width: 80px; height: 80px; padding: 20px;}
-  .logo-section h1, .header-section h1 { font-size: 24px;}
-  .text-content h2 { font-size: 20px;}
-  .building-2 {height: 120px;}
-  .star-rating {gap:4px;}
-  .star svg { width: 32px; height:32px;}
+  .app-title { font-size: 24px;}
+  .app-logo { width: 60px; height: 60px; padding: 12px;}
+  .logo-section h1, .header-section h1 { font-size: 20px;}
+  .text-content h2 { font-size: 16px;}
+  .building-2 {height: 90px;}
+  .star-rating {gap:2px;}
+  .star svg { width: 24px; height:24px;}
   .category-options { flex-direction: column; }
   .category-btn { width: 100%; }
   .bookmarks-grid, .categories-grid { grid-template-columns: 1fr; }
